@@ -14,37 +14,30 @@ function htmlCalendar(month, year) {
   let calendarDayList = document.querySelector('.calendar').querySelectorAll('td');
   let date = new Date(year, month, 1);
   let day = date.getDate() - date.getDay() + 1;
-  let i = 0;
+  let flag = 0;
 
-  for (i; i < 35; i++) {
-    date.setFullYear(year, month, day++);
-    calendarDayList[i].textContent = date.getDate();
-    calendarDayList[i].style.color = getColor(date,month);
-  }
+  for (let i = 0; i < 42; i++) {
+    if (i === 35) {
+      date.setFullYear(year, month, day);
+      if (month !== date.getMonth()) {
+        flag = 1;
+      }
+    }
 
-  date.setDate(day);
-  if (month === date.getMonth()) {
-    let newRow = document.createElement('tr');
-    newRow.innerHTML = '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
-    document.querySelector('.calendar').querySelector('table').append(newRow);
-    calendarDayList = document.querySelector('.calendar').querySelectorAll('td');
-
-    for (i; i < 42; i++) {
+    if (flag === 1) {
+      calendarDayList[i].textContent = '';
+    } else {
       date.setFullYear(year, month, day++);
       calendarDayList[i].textContent = date.getDate();
-      calendarDayList[i].style.color = getColor(date,month);
-    }
-  } else {
-    if (document.querySelector('.calendar').querySelector('table').rows.length === 7) {
-      document.querySelector('.calendar').querySelector('table').deleteRow(6);
+      calendarDayList[i].style.color = getColor(date, month);
     }
   }
 }
 
-function getColor(date, month){
-    if (date.getDay() === 0 || date.getDay() === 6) return 'red';
-      else if (month != date.getMonth()) return 'blue';
-      else return 'black';
+function getColor(date, month) {
+  if (date.getDay() === 0 || date.getDay() === 6) return 'red';
+  else if (month != date.getMonth()) return 'blue';
+  else return 'black';
 }
 
 document.querySelector('.previous-month').addEventListener('click', () => {
